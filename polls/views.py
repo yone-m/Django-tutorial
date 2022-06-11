@@ -5,6 +5,7 @@ from .models import Question,Choice
 from django.template import loader
 from django.http import Http404
 from django.views import generic
+from django.utils import timezone
 # Create your views here.
 #def index(request):
 #    latest_question_list = Question.objects.order_by('-pub_date')[:5]
@@ -20,7 +21,7 @@ class IndexView(generic.ListView):
     context_object_name = 'latest_question_list'
     
     def get_queryset(self):
-        return Question.objects.order_by('-pub_date')[:5]
+        return Question.objects.filter(pub_date__lte=timezone.now()).order_by('-pub_date')[:5]
 
 class DetailView(generic.DetailView):
     model = Question
